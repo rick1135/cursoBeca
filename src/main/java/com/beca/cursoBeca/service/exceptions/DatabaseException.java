@@ -1,4 +1,7 @@
 package com.beca.cursoBeca.service.exceptions;
 
-public class DatabaseException {
+public class DatabaseException extends RuntimeException{
+    public DatabaseException(String message) {
+        super(message);
+    }
 }
