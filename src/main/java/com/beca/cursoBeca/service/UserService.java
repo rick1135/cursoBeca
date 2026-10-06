@@ -2,6 +2,7 @@ package com.beca.cursoBeca.service;
 
 import com.beca.cursoBeca.entity.User;
 import com.beca.cursoBeca.repository.UserRepository;
+import com.beca.cursoBeca.service.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class UserService {
 
     public User findById(Long id){
         Optional<User> user = userRepository.findById(id);
-        return user.get();
+        return user.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public User save(User user){
