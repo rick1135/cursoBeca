@@ -1,8 +1,10 @@
 package com.beca.cursoBeca.config;
 
+import com.beca.cursoBeca.entity.Category;
 import com.beca.cursoBeca.entity.Order;
 import com.beca.cursoBeca.entity.User;
 import com.beca.cursoBeca.entity.enums.OrderStatus;
+import com.beca.cursoBeca.repository.CategoryRepository;
 import com.beca.cursoBeca.repository.OrderRepository;
 import com.beca.cursoBeca.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +19,20 @@ import java.util.Arrays;
 @Profile("test")
 public class TestConfig implements CommandLineRunner {
     @Autowired
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private final OrderRepository orderRepository;
+    private OrderRepository orderRepository;
 
-    public TestConfig(UserRepository userRepository,  OrderRepository orderRepository) {
-        this.userRepository = userRepository;
-        this.orderRepository = orderRepository;
-    }
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public void run(String... args) throws Exception {
+        Category cat1 = new Category(null, "Electronics");
+        Category cat2 = new Category(null, "Books");
+        Category cat3 = new Category(null, "Computers");
+
         User u1 = userRepository.save(new User(null, "Maria", "maria@gmail.com", "98888888", "123456"));
         User u2 = userRepository.save(new User(null, "Alex", "alex@gmail.com", "977777777", "123456"));
 
@@ -36,7 +40,7 @@ public class TestConfig implements CommandLineRunner {
         Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), OrderStatus.WAITING_PAYMENT, u2);
         Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.WAITING_PAYMENT, u1);
 
-
+        categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
         userRepository.saveAll(Arrays.asList(u1, u2));
         orderRepository.saveAll(Arrays.asList(o1, o2, o3));
     }
